@@ -41,15 +41,10 @@ public class ConcertController {
     @GetMapping
     @Transactional
     public List<ConcertDTO> getAllConcerts() {
-        List<Concert> concerts = concertRepository.findAll();
-        List<ConcertDTO> concertDTOs = new ArrayList<>();
-
-        for (Concert concert : concerts) {
-            ConcertDTO concertDTO = convertToConcertDTO(concert);
-            concertDTOs.add(concertDTO);
-        }
-
-        return concertDTOs;
+        return concertRepository.findAll()
+            .stream()
+            .map(this::convertToConcertDTO)
+            .collect(Collectors.toList());
     }
     private ConcertDTO convertToConcertDTO(Concert concert) {
         ConcertDTO concertDTO = new ConcertDTO();
