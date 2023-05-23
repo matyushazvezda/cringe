@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import my_project.dto.ConcertDTO;
 import my_project.dto.MusicianDTO;
 import my_project.model.Concert;
@@ -30,7 +32,7 @@ import my_project.repository.MusicianRepository;
 
 @RestController
 @RequestMapping("/api/concerts")
-
+@Slf4j
 public class ConcertController {
     @Autowired
     private ConcertRepository concertRepository;
@@ -41,15 +43,10 @@ public class ConcertController {
     @GetMapping
     @Transactional
     public List<ConcertDTO> getAllConcerts() {
-        List<Concert> concerts = concertRepository.findAll();
-        List<ConcertDTO> concertDTOs = new ArrayList<>();
-
-        for (Concert concert : concerts) {
-            ConcertDTO concertDTO = convertToConcertDTO(concert);
-            concertDTOs.add(concertDTO);
-        }
-
-        return concertDTOs;
+        return concertRepository.findAll()
+        .stream()
+        .map(this::convertToConcertDTO)
+        .collect(Collectors.toList());
     }
     private ConcertDTO convertToConcertDTO(Concert concert) {
         ConcertDTO concertDTO = new ConcertDTO();
@@ -59,9 +56,24 @@ public class ConcertController {
         concertDTO.setTicketPriceS(concert.getTicketPriceS());
         concertDTO.setTicketPriceV(concert.getTicketPriceV());
         concertDTO.setDate(concert.getDate());
-        // Заполните остальные поля в ConcertDTO
-
+        concertDTO.setMusicians(
+            concert.getMusicians()
+                .stream()
+                .map(this::convertToMusicianDTO)
+                .collect(Collectors.toSet()));
+       
         return concertDTO;
+    }
+
+    private MusicianDTO convertToMusicianDTO (Musician musician) {
+        MusicianDTO musicianDTO = new MusicianDTO();
+        musicianDTO.setId(musician.getId());
+        musicianDTO.setBio(musician.getBio());
+        musicianDTO.setFirstName(musician.getFirstName());
+        musicianDTO.setLastName(musician.getLastName());
+        musicianDTO.setMusicStyle(musician.getMusicStyle());
+
+        return musicianDTO;
     }
 /* 
     @GetMapping
