@@ -54,9 +54,25 @@ public class ConcertController {
         concertDTO.setTicketPriceS(concert.getTicketPriceS());
         concertDTO.setTicketPriceV(concert.getTicketPriceV());
         concertDTO.setDate(concert.getDate());
+        concertDTO.setMusicians(
+            concert.getMusicians()
+                .stream()
+                .map(this::convertToMusicianDTO)
+                .collect(Collectors.toSet()));
         // Заполните остальные поля в ConcertDTO
 
         return concertDTO;
+    }
+
+    private MusicianDTO convertToMusicianDTO (Musician musician) {
+        MusicianDTO musicianDTO = new MusicianDTO();
+        musicianDTO.setId(musician.getId());
+        musicianDTO.setBio(musicianDTO.getBio());
+        musicianDTO.setFirstName(musician.getFirstName());
+        musicianDTO.setLastName(musician.getLastName());
+        musicianDTO.setMusicStyle(musician.getMusicStyle());
+
+        return musicianDTO;
     }
 /* 
     @GetMapping
