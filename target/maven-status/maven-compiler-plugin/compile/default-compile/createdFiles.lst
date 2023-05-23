@@ -1,0 +1,12 @@
+my_project\repository\UserRepository.class
+my_project\model\Musician.class
+my_project\model\Concert.class
+my_project\model\InstantConverter.class
+my_project\model\User.class
+my_project\dto\MusicianDTO.class
+my_project\dto\ConcertDTO.class
+my_project\controller\ConcertController.class
+my_project\controller\UserController.class
+my_project\repository\ConcertRepository.class
+my_project\controller\WebConfig.class
+my_project\repository\MusicianRepository.class
