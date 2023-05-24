@@ -1,7 +1,9 @@
 package my_project.controller;
 
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,6 +31,7 @@ import org.springframework.data.domain.Sort.Direction;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import my_project.dto.ConcertDTO;
+import my_project.dto.ConcertFilterDTO;
 import my_project.dto.MusicianDTO;
 import my_project.model.Concert;
 import my_project.model.Musician;
@@ -43,12 +47,40 @@ public class ConcertController {
     @Autowired
     private MusicianRepository musicianRepository;
 
-
     @GetMapping
     @Transactional
-    public List<ConcertDTO> getAllConcerts(@RequestParam(required = false) String field) {
-        if (field != null && !field.isEmpty()) {
-            return concertRepository.findAll(Sort.by(Direction.ASC, field))
+    public List<ConcertDTO> getAllConcerts(@ModelAttribute ConcertFilterDTO filterDTO) {
+        if (filterDTO.getStartDate() != null && filterDTO.getEndDate() != null) {
+            // Применяем фильтрацию по диапазону дат
+            return concertRepository.findByDateBetween(filterDTO.getStartDate(), filterDTO.getEndDate())
+                .stream()
+                .map(this::convertToConcertDTO)
+                .collect(Collectors.toList());
+        } else if (filterDTO.getDate() != null) {
+            // Применяем фильтрацию по конкретной дате
+            Date date = filterDTO.getDate();
+            return concertRepository.findByDateBetween(filterDTO.getDate(), filterDTO.getDate())
+                .stream()
+                .map(this::convertToConcertDTO)
+                .collect(Collectors.toList());
+        }
+        
+        else {
+            return concertRepository.findAll()
+                .stream()
+                .map(this::convertToConcertDTO)
+                .collect(Collectors.toList());
+        }
+    }
+
+
+    /* 
+    @GetMapping
+    @Transactional
+    public List<ConcertDTO> getAllConcerts(@ModelAttribute ConcertFilterDTO filterDTO) {
+        if (filterDTO.getStartDate() != null && filterDTO.getEndDate() != null) {
+            // Применяем фильтрацию по диапазону дат
+            return concertRepository.findByDateBetween(filterDTO.getStartDate(), filterDTO.getEndDate())
                 .stream()
                 .map(this::convertToConcertDTO)
                 .collect(Collectors.toList());
@@ -58,8 +90,7 @@ public class ConcertController {
                 .map(this::convertToConcertDTO)
                 .collect(Collectors.toList());
         }
-    }
-
+    } */
     /* 
     @GetMapping
     @Transactional
@@ -77,7 +108,7 @@ public class ConcertController {
         concertDTO.setTicketPriceS(concert.getTicketPriceS());
         concertDTO.setTicketPriceV(concert.getTicketPriceV());
         concertDTO.setDate(concert.getDate());
-        log.info("reklama1");
+        log.info("reklama9");
         concertDTO.setTime(concert.getTime());
         concertDTO.setMusicians(
             concert.getMusicians()

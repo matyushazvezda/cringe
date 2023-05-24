@@ -6,6 +6,7 @@ my_project\model\User.class
 my_project\dto\MusicianDTO.class
 my_project\dto\ConcertDTO.class
 my_project\controller\ConcertController.class
+my_project\dto\ConcertFilterDTO.class
 my_project\controller\UserController.class
 my_project\repository\ConcertRepository.class
 my_project\controller\WebConfig.class
