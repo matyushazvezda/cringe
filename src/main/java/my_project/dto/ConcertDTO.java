@@ -16,6 +16,7 @@ public class ConcertDTO {
     private double ticketPriceS;
     private double ticketPriceV;
     private Date date;
+    private String time;
     private Set<MusicianDTO> musicians;
 
 

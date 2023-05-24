@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
+import javax.ws.rs.NotFoundException;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,8 @@ public class ConcertController {
         concertDTO.setTicketPriceS(concert.getTicketPriceS());
         concertDTO.setTicketPriceV(concert.getTicketPriceV());
         concertDTO.setDate(concert.getDate());
+        log.info("reklama");
+        concertDTO.setTime(concert.getTime());
         concertDTO.setMusicians(
             concert.getMusicians()
                 .stream()
@@ -75,58 +78,16 @@ public class ConcertController {
 
         return musicianDTO;
     }
-/* 
-    @GetMapping
-    public List<ConcertDTO> getAllConcerts() {
-        List<Concert> concerts = concertRepository.findAll();
-        List<ConcertDTO> concertDTOs = new ArrayList<>();
-
-        for (Concert concert : concerts) {
-            ConcertDTO concertDTO = new ConcertDTO();
-            concertDTO.setId(concert.getId());
-            concertDTO.setName(concert.getName());
-            concertDTO.setLocation(concert.getLocation());
-            concertDTO.setTicketPriceS(concert.getTicketPriceS());
-            concertDTO.setTicketPriceV(concert.getTicketPriceV());
-            concertDTO.setDate(concert.getDate());
-
-            // Преобразование списка музыкантов в список MusicianDTO
-            Set<MusicianDTO> musicianDTOs = concert.getMusicians().stream()
-                    .map(musician -> {
-                        MusicianDTO musicianDTO = new MusicianDTO();
-                        musicianDTO.setId(musician.getId());
-                        musicianDTO.setFirstName(musician.getFirstName());
-                        musicianDTO.setLastName(musician.getLastName());
-                        musicianDTO.setBio(musician.getBio());
-                        musicianDTO.setMusicStyle(musician.getMusicStyle());
-                        return musicianDTO;
-                    })
-                    .collect(Collectors.toSet());
-
-            concertDTO.setMusicians(musicianDTOs);
-            concertDTOs.add(concertDTO);
-        }
-
-        return concertDTOs;
-    }
-    */
-    /* 
-    @GetMapping
-    public List<Concert> getAllConcerts() {
-        List<Concert> concerts = concertRepository.findAll();
-        for (Concert concert : concerts) {
-            Hibernate.initialize(concert.getMusicians());
-        }
-        return concerts;
-    }
      
     @GetMapping("/{id}")
-    public ResponseEntity<Concert> getConcertById(@PathVariable Long id) {
-        return concertRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @Transactional
+    public ConcertDTO getConcertById(@PathVariable Long id) {
+        Concert concert = concertRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Concert not found with id: " + id));
+        return convertToConcertDTO(concert);
     }
-
+    
+/* 
     @PostMapping
     public Concert createConcert(@RequestBody Concert concert) {
         return concertRepository.save(concert);

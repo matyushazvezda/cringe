@@ -58,18 +58,24 @@ public class Concert {
     @Column(nullable = false, name = "date")
     private Date date;
 
+    @Column(nullable = false, name = "time")
+    private String time;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "concert_musicians",
         joinColumns = @JoinColumn(name = "concert_id"),
         inverseJoinColumns = @JoinColumn(name = "musician_id"))
     private Set<Musician> musicians = new HashSet<>();
-    
 
     @Override
     public String toString() {
         return "Concert [id=" + id + ", name=" + name + ", location=" + location + ", ticketPriceS=" + ticketPriceS
-                + ", ticketPriceV=" + ticketPriceV + ", date=" + date + ", musicians=" + musicians + "]";
+                + ", ticketPriceV=" + ticketPriceV + ", date=" + date + ", time=" + time + ", musicians=" + musicians
+                + "]";
     }
+    
+
+    
  
 }

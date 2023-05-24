@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 23 2023 г., 06:27
+-- Время создания: Май 24 2023 г., 00:59
 -- Версия сервера: 10.4.27-MariaDB
 -- Версия PHP: 8.2.0
 
@@ -33,17 +33,18 @@ CREATE TABLE `concerts` (
   `location` varchar(255) NOT NULL,
   `ticket_price_s` decimal(10,2) NOT NULL DEFAULT 0.00,
   `ticket_price_v` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `date` date DEFAULT NULL
+  `date` date DEFAULT NULL,
+  `time` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Дамп данных таблицы `concerts`
 --
 
-INSERT INTO `concerts` (`id`, `name`, `location`, `ticket_price_s`, `ticket_price_v`, `date`) VALUES
-(1, 'Rock Fest', 'Madison Square Garden, New York', '50.00', '100.00', '2023-06-01'),
-(2, 'Classical Night', 'Royal Albert Hall, London', '75.00', '150.00', '2023-06-05'),
-(3, 'Jazz Jam', 'Blue Note, Tokyo', '40.00', '80.00', '2023-06-10');
+INSERT INTO `concerts` (`id`, `name`, `location`, `ticket_price_s`, `ticket_price_v`, `date`, `time`) VALUES
+(1, 'Rock Fest', 'Madison Square Garden, New York', '50.00', '100.00', '2023-06-01', '20:00'),
+(2, 'Classical Night', 'Royal Albert Hall, London', '75.00', '150.00', '2023-06-05', '19:30'),
+(3, 'Jazz Jam', 'Blue Note, Tokyo', '40.00', '80.00', '2023-06-10', '21:00');
 
 -- --------------------------------------------------------
 
