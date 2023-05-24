@@ -16,6 +16,7 @@ import my_project.model.Concert;
 public interface ConcertRepository extends JpaRepository<Concert, Long> {
     
     List<Concert> findByDateBetween(Date startDate, Date endDate);
+    List<Concert> findByTicketPriceSBetween(double minPrice, double maxPrice);
     //List<Concert> findByDate(Date Date, Date Date1);
     //@Query("SELECT c FROM Concert c LEFT JOIN FETCH c.musicians WHERE c.id = :id")
     //Optional<Concert> findByIdWithMusicians(Long id);

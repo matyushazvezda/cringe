@@ -58,8 +58,25 @@ public class ConcertController {
                 .collect(Collectors.toList());
         } else if (filterDTO.getDate() != null) {
             // Применяем фильтрацию по конкретной дате
-            Date date = filterDTO.getDate();
             return concertRepository.findByDateBetween(filterDTO.getDate(), filterDTO.getDate())
+                .stream()
+                .map(this::convertToConcertDTO)
+                .collect(Collectors.toList());
+        } else if (filterDTO.getMinPrice() != null && filterDTO.getMaxPrice() != null) {
+            // Применяем фильтрацию по диапазону цен
+            return concertRepository.findByTicketPriceSBetween(
+                    filterDTO.getMinPrice(),
+                    filterDTO.getMaxPrice()
+                )
+                .stream()
+                .map(this::convertToConcertDTO)
+                .collect(Collectors.toList());
+        }   else if (filterDTO.getPrice() != null) {
+            // Применяем фильтрацию по цене
+            return concertRepository.findByTicketPriceSBetween(
+                    filterDTO.getPrice(),
+                    filterDTO.getPrice()
+                )
                 .stream()
                 .map(this::convertToConcertDTO)
                 .collect(Collectors.toList());
@@ -108,7 +125,7 @@ public class ConcertController {
         concertDTO.setTicketPriceS(concert.getTicketPriceS());
         concertDTO.setTicketPriceV(concert.getTicketPriceV());
         concertDTO.setDate(concert.getDate());
-        log.info("reklama9");
+        log.info("reklama17");
         concertDTO.setTime(concert.getTime());
         concertDTO.setMusicians(
             concert.getMusicians()
