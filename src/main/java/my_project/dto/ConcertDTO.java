@@ -19,8 +19,6 @@ public class ConcertDTO {
     private Date date;
     private String time;
     private Set<MusicianDTO> musicians;
-    //private Set<Long> musicianIds = new HashSet<>(); // Идентификаторы музыкантов
-
 
     public ConcertDTO() {
     }
