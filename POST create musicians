@@ -1,0 +1,25 @@
+// URL для отправки POST-запроса
+const url = 'http://localhost:8080/my_project-1.0-SNAPSHOT/api/musicians';
+
+// Данные нового музыканта в формате JSON
+const musicianData = {
+  bio: 'TEST',
+  firstName: 'TEST',
+  lastName: 'TEST',
+  musicStyle: 'TEST',
+};
+
+// Опции запроса
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(musicianData),
+};
+
+// Отправка POST-запроса
+fetch(url, options)
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));

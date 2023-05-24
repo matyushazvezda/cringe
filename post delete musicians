@@ -1,0 +1,15 @@
+fetch('http://localhost:8080/my_project-1.0-SNAPSHOT/api/musicians/delete/8', {
+  method: 'POST'
+})
+.then(response => {
+  if (response.ok) {
+    console.log('Musician deleted successfully.');
+  } else if (response.status === 404) {
+    console.log('Musician not found.');
+  } else {
+    console.log('Failed to delete musician.');
+  }
+})
+.catch(error => {
+  console.error('An error occurred:', error);
+});

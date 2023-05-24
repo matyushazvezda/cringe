@@ -1,0 +1,32 @@
+const musicianId = 1; // Идентификатор музыканта, которого вы хотите обновить
+
+const url = `http://localhost:8080/my_project-1.0-SNAPSHOT/api/musicians/${musicianId}`;
+
+// Данные музыканта для обновления
+const musicianData = {
+  bio: 'test',
+  firstName: 'test',
+  lastName: 'test',
+  musicStyle: 'test',
+};
+
+// Отправка запроса на обновление
+fetch(url, {
+  method: 'POST', // Используйте 'PATCH', если требуется частичное обновление
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(musicianData),
+})
+  .then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Ошибка при обновлении музыканта');
+  })
+  .then((updatedMusician) => {
+    console.log('Музыкант успешно обновлен:', updatedMusician);
+  })
+  .catch((error) => {
+    console.error('Ошибка при обновлении музыканта:', error);
+  });

@@ -83,6 +83,66 @@ public class MusicianController {
         return convertToMusicianDTO(updatedMusician);
     }
 
+    @PostMapping
+    @Transactional
+      public MusicianDTO createMusician(@RequestBody MusicianDTO musicianDTO) {
+        log.info("reklama_music_creat");
+      // Создаем новый объект Musician на основе данных из musicianDTO
+      Musician musician = new Musician();
+      musician.setBio(musicianDTO.getBio());
+      musician.setFirstName(musicianDTO.getFirstName());
+      musician.setLastName(musicianDTO.getLastName());
+      musician.setMusicStyle(musicianDTO.getMusicStyle());
+
+      // Сохраняем нового музыканта
+      Musician createdMusician = musicianRepository.save(musician);
+
+      // Возвращаем созданного музыканта в виде MusicianDTO
+      return convertToMusicianDTO(createdMusician);
+    } 
+
+    @PostMapping("/delete/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteMusician(@PathVariable Long id) {
+        log.info("reklama_music_delete");
+        // Проверяем, существует ли музыкант с заданным идентификатором
+        if (musicianRepository.existsById(id)) {
+          // Удаляем музыканта из репозитория
+          musicianRepository.deleteById(id);
+          return ResponseEntity.noContent().build();
+        } else {
+          return ResponseEntity.notFound().build();
+        }
+}
+
+/* 
+    @PostMapping("/delete/{id}")
+    @Transactional
+    public void deleteMusician(@PathVariable Long id) {
+       log.info("reklama_music_delete");
+       // Проверяем, существует ли музыкант с заданным идентификатором
+        if (!musicianRepository.existsById(id)) {
+           throw new NotFoundException("Musician not found with id: " + id);
+        }
+         // Удаляем музыканта из репозитория
+        musicianRepository.deleteById(id);
+} 
+*/
+
+    
+
+/* 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteMusician(@PathVariable Long id) {
+        log.info("reklama_music_delete");
+        Musician musician = musicianRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Musician not found with id: " + id));
+        
+        // Удаляем музыканта
+        musicianRepository.delete(musician);
+    }
+    */
 
 /* 
     private ConcertDTO convertToConcertDTO1(Concert concert) {
