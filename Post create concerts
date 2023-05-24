@@ -1,0 +1,32 @@
+fetch('http://localhost:8080/my_project-1.0-SNAPSHOT/api/concerts', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'TEST NAME',
+    location: 'TEST Location',
+    ticketPriceS: 12.99,
+    ticketPriceV: 13.99,
+    date: '2023-04-10',
+    time: '21:00',
+    musicians: [
+      {
+        id: 6
+      },
+      {
+        id: 7
+      }
+    ]
+  })
+})
+.then(response => {
+  if (response.ok) {
+    console.log('Concert created successfully.');
+  } else {
+    console.log('Failed to create concert.');
+  }
+})
+.catch(error => {
+  console.error('An error occurred:', error);
+});

@@ -57,7 +57,7 @@ public class ConcertController {
         concertDTO.setTicketPriceS(concert.getTicketPriceS());
         concertDTO.setTicketPriceV(concert.getTicketPriceV());
         concertDTO.setDate(concert.getDate());
-        log.info("reklama");
+        log.info("reklama1");
         concertDTO.setTime(concert.getTime());
         concertDTO.setMusicians(
             concert.getMusicians()
@@ -86,7 +86,78 @@ public class ConcertController {
                 .orElseThrow(() -> new NotFoundException("Concert not found with id: " + id));
         return convertToConcertDTO(concert);
     }
-    
+    @PostMapping
+    @Transactional
+    public ConcertDTO createConcert(@RequestBody ConcertDTO concertDTO) {
+        log.info("reklama_createConcert");
+        Concert concert = new Concert();
+        concert.setName(concertDTO.getName());
+        concert.setLocation(concertDTO.getLocation());
+        concert.setTicketPriceS(concertDTO.getTicketPriceS());
+        concert.setTicketPriceV(concertDTO.getTicketPriceV());
+        concert.setDate(concertDTO.getDate());
+        concert.setTime(concertDTO.getTime());
+
+        // Преобразуем список музыкантов из DTO в сущности Musician
+        Set<Musician> musicians = concertDTO.getMusicians().stream()
+                .map(this::convertToMusicianEntity)
+                .collect(Collectors.toSet());
+        concert.setMusicians(musicians);
+
+        Concert createdConcert = concertRepository.save(concert);
+
+        return convertToConcertDTO(createdConcert);
+    }
+
+    private Musician convertToMusicianEntity(MusicianDTO musicianDTO) {
+        Musician musician = new Musician();
+        musician.setId(musicianDTO.getId());
+        musician.setBio(musicianDTO.getBio());
+        musician.setFirstName(musicianDTO.getFirstName());
+        musician.setLastName(musicianDTO.getLastName());
+        musician.setMusicStyle(musicianDTO.getMusicStyle());
+
+        return musician;
+    }
+
+    @PostMapping("/{id}")
+    @Transactional
+    public ConcertDTO updateConcert(@PathVariable Long id, @RequestBody ConcertDTO concertDTO) {
+        log.info("reklama_upadateConcert");
+        Concert existingConcert = concertRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Concert not found with id: " + id));
+
+        existingConcert.setName(concertDTO.getName());
+        existingConcert.setLocation(concertDTO.getLocation());
+        existingConcert.setTicketPriceS(concertDTO.getTicketPriceS());
+        existingConcert.setTicketPriceV(concertDTO.getTicketPriceV());
+        existingConcert.setDate(concertDTO.getDate());
+        existingConcert.setTime(concertDTO.getTime());
+
+        // Преобразуем список музыкантов из DTO в сущности Musician
+        Set<Musician> musicians = concertDTO.getMusicians().stream()
+                .map(this::convertToMusicianEntity)
+                .collect(Collectors.toSet());
+        existingConcert.setMusicians(musicians);
+
+        Concert updatedConcert = concertRepository.save(existingConcert);
+
+        return convertToConcertDTO(updatedConcert);
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteConcert(@PathVariable Long id) {
+        if (concertRepository.existsById(id)) {
+            concertRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+
+
+
 /* 
     @PostMapping
     public Concert createConcert(@RequestBody Concert concert) {

@@ -2,6 +2,7 @@ package my_project.dto;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class ConcertDTO {
     private Date date;
     private String time;
     private Set<MusicianDTO> musicians;
-
+    //private Set<Long> musicianIds = new HashSet<>(); // Идентификаторы музыкантов
 
 
     public ConcertDTO() {

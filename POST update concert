@@ -1,0 +1,30 @@
+fetch('http://localhost:8080/api/concerts/{id}', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Новое название концерта',
+    location: 'Новое место проведения',
+    ticketPriceS: 75.0,
+    ticketPriceV: 150.0,
+    date: '2023-06-15',
+    time: '19:30',
+    musicians: [
+      {
+        id: 1
+      },
+      // Добавьте остальных музыкантов, которых вы хотите добавить или изменить
+    ]
+  })
+})
+.then(response => {
+  if (response.ok) {
+    console.log('Concert updated successfully.');
+  } else {
+    console.log('Failed to update concert.');
+  }
+})
+.catch(error => {
+  console.error('An error occurred:', error);
+});
