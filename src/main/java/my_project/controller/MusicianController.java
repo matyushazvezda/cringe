@@ -113,75 +113,7 @@ public class MusicianController {
         } else {
           return ResponseEntity.notFound().build();
         }
-}
-
-
-/* 
-    private ConcertDTO convertToConcertDTO1(Concert concert) {
-        ConcertDTO concertDTO = new ConcertDTO();
-        concertDTO.setId(concert.getId());
-        concertDTO.setName(concert.getName());
-        concertDTO.setLocation(concert.getLocation());
-        concertDTO.setTicketPriceS(concert.getTicketPriceS());
-        concertDTO.setTicketPriceV(concert.getTicketPriceV());
-        concertDTO.setDate(concert.getDate());
-        
-        concertDTO.setTime(concert.getTime());
-        concertDTO.setMusicians(
-            concert.getMusicians()
-                .stream()
-                .map(this::convertToMusicianDTO)
-                .collect(Collectors.toSet()));
-       
-        return concertDTO;
     }
 
-    private MusicianDTO convertToMusicianDTO1 (Musician musician) {
-        MusicianDTO musicianDTO = new MusicianDTO();
-        musicianDTO.setId(musician.getId());
-        musicianDTO.setBio(musician.getBio());
-        musicianDTO.setFirstName(musician.getFirstName());
-        musicianDTO.setLastName(musician.getLastName());
-        musicianDTO.setMusicStyle(musician.getMusicStyle());
-
-        return musicianDTO;
-    }
-    */
-    /* 
-    private final MusicianRepository musicianRepository;
-
-    public MusicianController(MusicianRepository musicianRepository) {
-        this.musicianRepository = musicianRepository;
-    }
-
-
-    @PostMapping
-    public Musician createMusician(@RequestBody Musician musician) {
-        return musicianRepository.save(musician);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Musician> updateMusician(@PathVariable Long id, @RequestBody Musician musician) {
-        return musicianRepository.findById(id)
-                .map(existingMusician -> {
-                    existingMusician.setFirstName(musician.getFirstName());
-                    existingMusician.setLastName(musician.getLastName());
-                    existingMusician.setBio(musician.getBio());
-                    existingMusician.setMusicStyle(musician.getMusicStyle());
-                    existingMusician.setConcerts(musician.getConcerts());
-                    return ResponseEntity.ok(musicianRepository.save(existingMusician));
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Musician> deleteMusician(@PathVariable Long id) {
-        return musicianRepository.findById(id)
-                .map(existingMusician -> {
-                    musicianRepository.delete(existingMusician);
-                    return ResponseEntity.ok(existingMusician);
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }*/
 }
 
