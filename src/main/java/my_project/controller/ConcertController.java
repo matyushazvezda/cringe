@@ -15,6 +15,7 @@ import javax.ws.rs.NotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,6 +39,7 @@ import my_project.model.Musician;
 import my_project.repository.ConcertRepository;
 import my_project.repository.MusicianRepository; 
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api/concerts")
 @Slf4j
@@ -125,7 +127,7 @@ public class ConcertController {
         concertDTO.setTicketPriceS(concert.getTicketPriceS());
         concertDTO.setTicketPriceV(concert.getTicketPriceV());
         concertDTO.setDate(concert.getDate());
-        log.info("reklama17");
+        log.info("reklama10");
         concertDTO.setTime(concert.getTime());
         concertDTO.setMusicians(
             concert.getMusicians()
