@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
@@ -43,12 +46,29 @@ public class ConcertController {
 
     @GetMapping
     @Transactional
+    public List<ConcertDTO> getAllConcerts(@RequestParam(required = false) String field) {
+        if (field != null && !field.isEmpty()) {
+            return concertRepository.findAll(Sort.by(Direction.ASC, field))
+                .stream()
+                .map(this::convertToConcertDTO)
+                .collect(Collectors.toList());
+        } else {
+            return concertRepository.findAll()
+                .stream()
+                .map(this::convertToConcertDTO)
+                .collect(Collectors.toList());
+        }
+    }
+
+    /* 
+    @GetMapping
+    @Transactional
     public List<ConcertDTO> getAllConcerts() {
         return concertRepository.findAll()
         .stream()
         .map(this::convertToConcertDTO)
         .collect(Collectors.toList());
-    }
+    }*/
     private ConcertDTO convertToConcertDTO(Concert concert) {
         ConcertDTO concertDTO = new ConcertDTO();
         concertDTO.setId(concert.getId());
