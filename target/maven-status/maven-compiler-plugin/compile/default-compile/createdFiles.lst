@@ -10,3 +10,4 @@ my_project\controller\UserController.class
 my_project\repository\ConcertRepository.class
 my_project\controller\WebConfig.class
 my_project\repository\MusicianRepository.class
+my_project\controller\MusicianController.class
