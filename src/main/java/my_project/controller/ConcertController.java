@@ -93,32 +93,6 @@ public class ConcertController {
     }
 
 
-    /* 
-    @GetMapping
-    @Transactional
-    public List<ConcertDTO> getAllConcerts(@ModelAttribute ConcertFilterDTO filterDTO) {
-        if (filterDTO.getStartDate() != null && filterDTO.getEndDate() != null) {
-            // Применяем фильтрацию по диапазону дат
-            return concertRepository.findByDateBetween(filterDTO.getStartDate(), filterDTO.getEndDate())
-                .stream()
-                .map(this::convertToConcertDTO)
-                .collect(Collectors.toList());
-        } else {
-            return concertRepository.findAll()
-                .stream()
-                .map(this::convertToConcertDTO)
-                .collect(Collectors.toList());
-        }
-    } */
-    /* 
-    @GetMapping
-    @Transactional
-    public List<ConcertDTO> getAllConcerts() {
-        return concertRepository.findAll()
-        .stream()
-        .map(this::convertToConcertDTO)
-        .collect(Collectors.toList());
-    }*/
     private ConcertDTO convertToConcertDTO(Concert concert) {
         ConcertDTO concertDTO = new ConcertDTO();
         concertDTO.setId(concert.getId());
