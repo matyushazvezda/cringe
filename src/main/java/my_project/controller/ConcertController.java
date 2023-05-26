@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import my_project.dto.ConcertDTO;
 import my_project.dto.ConcertFilterDTO;
 import my_project.dto.MusicianDTO;
+import my_project.dto.UpdateConDTO;
 import my_project.model.Concert;
 import my_project.model.Musician;
 import my_project.repository.ConcertRepository;
@@ -145,6 +146,7 @@ public class ConcertController {
         // Преобразуем список музыкантов из DTO в сущности Musician
         Set<Musician> musicians = concertDTO.getMusicians().stream()
                 .map(this::convertToMusicianEntity)
+                .peek(musicianRepository::save)
                 .collect(Collectors.toSet());
         concert.setMusicians(musicians);
 
@@ -166,7 +168,7 @@ public class ConcertController {
 
     @PostMapping("/{id}")
     @Transactional
-    public ConcertDTO updateConcert(@PathVariable Long id, @RequestBody ConcertDTO concertDTO) {
+    public ConcertDTO updateConcert(@PathVariable Long id, @RequestBody UpdateConDTO concertDTO) {
         log.info("reklama_upadateConcert");
         Concert existingConcert = concertRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Concert not found with id: " + id));
@@ -179,12 +181,20 @@ public class ConcertController {
         existingConcert.setTime(concertDTO.getTime());
 
         // Преобразуем список музыкантов из DTO в сущности Musician
-        Set<Musician> musicians = concertDTO.getMusicians().stream()
-                .map(this::convertToMusicianEntity)
-                .collect(Collectors.toSet());
-        existingConcert.setMusicians(musicians);
+
+
+       
+         existingConcert.setMusicians(    concertDTO.getMusicianIds().stream()
+         .map(musicianRepository::getOne)
+         .collect(Collectors.toSet()));
 
         Concert updatedConcert = concertRepository.save(existingConcert);
+
+
+                // Обновляем связь между концертом и музыкантами
+        updatedConcert.getMusicians().forEach(musician -> {
+            musician.getConcerts().add(updatedConcert);
+        });
 
         return convertToConcertDTO(updatedConcert);
     }

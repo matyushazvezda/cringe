@@ -1,0 +1,15 @@
+fetch('http://localhost:8080/my_project-1.0-SNAPSHOT/api/concerts/7', {
+  method: 'DELETE'
+})
+.then(response => {
+  if (response.ok) {
+    console.log('Concert deleted successfully.');
+  } else if (response.status === 404) {
+    console.log('Concert not found.');
+  } else {
+    console.log('Failed to delete concert.');
+  }
+})
+.catch(error => {
+  console.error('An error occurred:', error);
+});

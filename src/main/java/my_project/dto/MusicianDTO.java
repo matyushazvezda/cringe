@@ -46,6 +46,11 @@ public class MusicianDTO {
     public void setMusicStyle(String musicStyle) {
         this.musicStyle = musicStyle;
     }
+    @Override
+    public String toString() {
+        return "MusicianDTO [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", bio=" + bio
+                + ", musicStyle=" + musicStyle + "]";
+    }
 
     
 }
